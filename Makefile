@@ -107,7 +107,8 @@ CONFIG_RTW_SDIO_PM_KEEP_POWER = y
 ###################### MP HW TX MODE FOR VHT #######################
 CONFIG_MP_VHT_HW_TX_MODE = n
 ###################### Platform Related #######################
-CONFIG_PLATFORM_I386_PC = y
+CONFIG_PLATFORM_I386_PC = n
+CONFIG_PLATFORM_MIPS_OE = y
 CONFIG_PLATFORM_ANDROID_X86 = n
 CONFIG_PLATFORM_ANDROID_INTEL_X86 = n
 CONFIG_PLATFORM_OPENWRT_NEO2 = n
@@ -740,6 +741,15 @@ KVER := $(shell uname -r)
 KSRC := /lib/modules/$(KVER)/build
 MODDESTDIR := /lib/modules/$(KVER)/kernel/drivers/net/wireless/
 INSTALL_PREFIX :=
+endif
+
+ifeq ($(CONFIG_PLATFORM_MIPS_OE), y)
+EXTRA_CFLAGS += -DCONFIG_80211AC_VHT
+EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -EL -DCONFIG_IOCTL_CFG80211 -DRTW_USE_CFG80211_STA_EVENT
+ARCH:=mips
+CROSS_COMPILE:=mipsel-linux-gnu-
+KVER:= 4.10.6
+KSRC:= /home/pewu/mips/openpli-oe-core/build/tmp/work-shared/formuler4turbo/kernel-source
 endif
 
 ifeq ($(CONFIG_PLATFORM_ACTIONS_ATM702X), y)
